@@ -3,20 +3,8 @@
  * Government of Jharkhand
  */
 
-/* ── Security Audit Fix #2: Improper Error Handling (CWE-209) ───────────────
- * Suppress raw JS errors, stack traces, and internal file paths from being
- * exposed to end users. All errors are silently swallowed client-side.
- * Server-side: ensure display_errors=Off and custom error pages are set.
- * ────────────────────────────────────────────────────────────────────────── */
-window.onerror = function(message, source, lineno, colno, error) {
-    // Silently prevent raw error details from being displayed to users
-    return true;
-};
-
-window.addEventListener('unhandledrejection', function(event) {
-    // Suppress unhandled Promise rejections from leaking internal details
-    event.preventDefault();
-});
+/* Do not globally swallow errors. Handle failures at the component or request
+ * boundary, and keep server-side error responses generic in the web-server config. */
 
 (function($) {
     'use strict';
