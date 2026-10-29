@@ -2827,3 +2827,23 @@ a:hover, a:focus {
         margin-right: 0;
     }
 }
+
+
+/* Prevent legacy non-wrapping notice text from creating a horizontal page scroll. */
+html {
+    overflow-x: clip;
+}
+
+.notice-track {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+    .notice-track {
+        flex: 0 1 auto;
+        width: 100%;
+    }
+}
