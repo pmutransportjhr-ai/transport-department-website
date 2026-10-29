@@ -157,7 +157,7 @@
                         </div>
                         <div class="govt-tools">
                             <a href="tel:${navData.topStrip.helpline}"><i class="fa fa-phone"></i> ${navData.topStrip.helplineText}</a>
-                            <a href="#main-content">Skip to Main Content</a>
+                            <a class="sr-only-focusable" href="#main-content">Skip to Main Content</a>
                             <span class="font-controls" aria-label="Font Controls">
                                 <a href="javascript:void(0)" onclick="RenderEngine.changeFontSize(-1)" title="Decrease Font Size">A−</a>
                                 <a href="javascript:void(0)" onclick="RenderEngine.changeFontSize(0)" title="Reset Font Size">A</a>
