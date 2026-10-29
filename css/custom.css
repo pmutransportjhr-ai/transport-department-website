@@ -2806,9 +2806,6 @@ a:hover, a:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .notice-track marquee {
-        scrollamount: 0;
-    }
 
     *,
     *::before,
@@ -2817,5 +2814,16 @@ a:hover, a:focus {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* Keep Bootstrap grid rows inside static-page content containers. Bootstrap
+   gutters are implemented with negative row margins; these pages sit in a
+   padded .page-container and otherwise extend 12px beyond the viewport. */
+@media (min-width: 768px) {
+    .page-container > .row {
+        margin-left: 0;
+        margin-right: 0;
     }
 }
