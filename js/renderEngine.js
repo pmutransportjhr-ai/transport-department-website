@@ -667,13 +667,13 @@
                 {
                     title: "Statewide Road Safety Month Campaign & Awareness Rally",
                     category: "Road Safety",
-                    image: "img/banners/slider1.jpg",
+                    image: "img/banners/Jharkhand%20Road%20Safety%20Awareness%20Campaign.png",
                     date: "Public Drive"
                 },
                 {
-                    title: "Inauguration of Automated Vehicle Fitness Inspection Center",
+                    title: "Vehicle Registration & Fitness Services",
                     category: "Infrastructure",
-                    image: "img/banners/newslider1.jpg",
+                    image: "img/services/vehicle-reg.jpg",
                     date: "Ranchi Center"
                 },
                 {
@@ -689,9 +689,9 @@
                     date: "Border Review"
                 },
                 {
-                    title: "National Highway Safety Guidelines & Helmet Rule Enforcement",
+                    title: "National Highway Safety Guidelines & Enforcement",
                     category: "Road Safety",
-                    image: "img/banners/newslider3.jpg",
+                    image: "img/road-signs/over-speeding.jpg",
                     date: "Safety Drive"
                 }
             ];
