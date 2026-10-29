@@ -6,20 +6,12 @@
 (function (window, document) {
     'use strict';
 
-    /* ── Security Audit Fix #7: Improper Referer Check (CWE-293) ────────────
-     * CSRF Token Utility:
-     *   - Generates a cryptographically random token per session
-     *   - Stores it in sessionStorage (cleared on tab close)
-     *   - Injects it as a hidden field into every form on the page
-     *   - Token must be verified server-side on all POST requests
-     *
-     * Referrer Allowlist:
-     *   - Validates any JS-driven redirects against trusted domains only
-     *   - Prevents open-redirect attacks via spoofed Referer headers
-     * ────────────────────────────────────────────────────────────────────── */
+    /*
+     * Client-side URL validation is defense in depth only. This static site does
+     * not provide a server-side token issuer or POST handler, so a token created
+     * in sessionStorage must never be treated as CSRF protection.
+     */
     var PortalSecurity = {
-
-        /* Trusted domains for referrer/redirect allowlist */
         TRUSTED_DOMAINS: [
             'transport.jharkhand.gov.in',
             '103.97.109.116',
@@ -29,76 +21,48 @@
             'echallan.parivahan.gov.in'
         ],
 
-        /* Generate or retrieve the session CSRF token */
-        getCSRFToken: function () {
-            var token = sessionStorage.getItem('_csrf_token');
-            if (!token) {
-                /* Use crypto.getRandomValues for cryptographic randomness */
-                if (window.crypto && window.crypto.getRandomValues) {
-                    var arr = new Uint8Array(32);
-                    window.crypto.getRandomValues(arr);
-                    token = Array.from(arr, function (b) {
-                        return ('0' + b.toString(16)).slice(-2);
-                    }).join('');
-                } else {
-                    /* Fallback (less secure) for older browsers */
-                    token = Math.random().toString(36).substring(2) +
-                            Math.random().toString(36).substring(2) +
-                            Date.now().toString(36);
-                }
-                sessionStorage.setItem('_csrf_token', token);
-            }
-            return token;
-        },
+        isTrustedURL: function (input) {
+            if (typeof input !== 'string' || !input.trim()) return false;
 
-        /* Inject CSRF token as hidden input into all forms */
-        injectCSRFTokens: function () {
-            var token = this.getCSRFToken();
-            var forms = document.querySelectorAll('form');
-            forms.forEach(function (form) {
-                if (!form.querySelector('input[name="_csrf_token"]')) {
-                    var input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = '_csrf_token';
-                    input.value = token;
-                    form.appendChild(input);
-                }
+            var parsed;
+            try {
+                parsed = new URL(input.trim(), window.location.href);
+            } catch (error) {
+                return false;
+            }
+
+            if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                return false;
+            }
+            if (parsed.username || parsed.password) return false;
+
+            /* Relative and same-origin links are allowed; reject cross-origin HTTP. */
+            if (parsed.origin === window.location.origin) return true;
+            if (parsed.protocol !== 'https:') return false;
+
+            var host = parsed.hostname.toLowerCase();
+            return this.TRUSTED_DOMAINS.some(function (domain) {
+                return host === domain.toLowerCase();
             });
         },
 
-        /* Validate a URL against the trusted domain allowlist
-         * Use this before any programmatic redirect to prevent open-redirect */
-        isTrustedURL: function (url) {
-            if (!url || typeof url !== 'string') return false;
-            /* Allow relative URLs (same origin) */
-            if (!url.match(/^https?:\/\//i)) return true;
-            var self = this;
-            return self.TRUSTED_DOMAINS.some(function (domain) {
-                return url.toLowerCase().indexOf(domain.toLowerCase()) !== -1;
-            });
-        },
+        safeRedirect: function (input) {
+            if (!this.isTrustedURL(input)) {
+                console.warn('[PortalSecurity] Blocked redirect to an untrusted URL.');
+                return false;
+            }
 
-        /* Safe redirect — only redirects to trusted domains */
-        safeRedirect: function (url) {
-            if (this.isTrustedURL(url)) {
-                window.location.href = url;
-            } else {
-                console.warn('[PortalSecurity] Blocked redirect to untrusted URL:', url);
+            try {
+                window.location.assign(new URL(input.trim(), window.location.href).href);
+                return true;
+            } catch (error) {
+                console.warn('[PortalSecurity] Redirect could not be completed.');
+                return false;
             }
         },
 
-        /* Initialise all security measures on DOM ready */
-        init: function () {
-            this.injectCSRFTokens();
-            /* Re-inject tokens for any dynamically added forms */
-            if (window.MutationObserver) {
-                var self = this;
-                var observer = new MutationObserver(function () {
-                    self.injectCSRFTokens();
-                });
-                observer.observe(document.body, { childList: true, subtree: true });
-            }
-        }
+        /* Kept as a compatibility hook; CSRF must be implemented by the server. */
+        init: function () {}
     };
 
     /* Expose PortalSecurity globally for use by other scripts if needed */
@@ -114,8 +78,7 @@
             this.renderFooter();
             this.setupAccordion();
             this.setupAccessibility();
-            /* Security Audit Fix #7: Inject CSRF tokens into all forms */
-            PortalSecurity.init();
+
         },
 
 
