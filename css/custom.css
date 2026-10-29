@@ -2847,3 +2847,90 @@ html {
         width: 100%;
     }
 }
+
+
+/* Accessible, responsive notification ticker (replaces deprecated <marquee>). */
+.notice-label {
+    flex: 0 0 auto;
+}
+
+.notice-track {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.notice-marquee {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    min-width: max-content;
+    gap: 18px;
+    animation: notice-ticker-scroll 58s linear infinite;
+    will-change: transform;
+}
+
+.notice-marquee > span {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.notice-track:hover .notice-marquee,
+.notice-track:focus-within .notice-marquee {
+    animation-play-state: paused;
+}
+
+@keyframes notice-ticker-scroll {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
+}
+
+@media (max-width: 767px) {
+    .notice-ticker {
+        box-sizing: border-box;
+        width: auto;
+        max-width: calc(100% - 24px);
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .notice-label {
+        align-self: stretch;
+        justify-content: center;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 7px 12px;
+        border-radius: 6px 6px 0 0;
+        text-align: center;
+    }
+
+    .notice-track {
+        display: block;
+        flex: 0 1 auto;
+        width: 100%;
+        min-width: 0;
+        padding: 8px 12px;
+    }
+
+    .notice-marquee {
+        animation-duration: 58s;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .notice-track {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+    }
+
+    .notice-marquee {
+        animation: none;
+        transform: none;
+        will-change: auto;
+    }
+}
