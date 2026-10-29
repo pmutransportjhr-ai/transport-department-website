@@ -252,9 +252,9 @@
                 <section class="notice-ticker" aria-label="Latest notifications">
                     <div class="notice-label"><i class="fa fa-bullhorn"></i> Latest Notifications</div>
                     <div class="notice-track">
-                        <marquee behavior="scroll" direction="left" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
+                        <div class="notice-marquee" aria-label="Transport Department notices">
                             ${tickerItemsHtml}
-                        </marquee>
+                        </div>
                     </div>
                 </section>
             `;
