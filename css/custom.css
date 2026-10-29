@@ -2676,3 +2676,146 @@ a:hover, a:focus {
 }
 
 
+
+
+/* =========================================================
+   QA FIXES — Bootstrap 5 accessibility + responsive header
+   ========================================================= */
+
+/* The portal still uses Bootstrap 3's sr-only utility in static pages.
+   Bootstrap 5 renamed this utility to visually-hidden. Keep legacy markup
+   accessible without making skip links and form labels visible by default. */
+.sr-only,
+.sr-only-focusable:not(:focus):not(:focus-visible) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0.5rem 0.75rem !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    z-index: 2000;
+    background: #ffffff !important;
+    color: var(--primary-green) !important;
+    box-shadow: 0 0 0 3px var(--accent-yellow);
+}
+
+/* Constrain the desktop nav to the available container width.
+   Long labels may wrap to a second row rather than creating page overflow. */
+@media (min-width: 992px) {
+    .morth-nav-row .navbar > .container-fluid {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .morth-nav-row .navbar-collapse {
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .morth-nav-row .navbar-nav {
+        width: 100%;
+        min-width: 0;
+        display: flex !important;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0 2px;
+    }
+
+    .morth-nav-row .navbar-nav > .nav-item {
+        min-width: 0;
+        flex: 0 1 auto;
+    }
+
+    .morth-nav-row .navbar-nav > .nav-item > .nav-link {
+        padding: 12px 8px;
+        font-size: 12px;
+        line-height: 1.25;
+        white-space: normal;
+    }
+
+    .morth-nav-row .portal-nav-link {
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .morth-nav-row .navbar-nav {
+        gap: 0;
+    }
+
+    .morth-nav-row .navbar-nav > .nav-item > .nav-link {
+        padding: 10px 5px;
+        font-size: 11px;
+    }
+
+    .morth-nav-row .portal-nav-link {
+        margin-left: 0;
+    }
+}
+
+/* Match the selectors emitted by RenderEngine (notice-label/notice-track).
+   The older mobile rules targeted ticker-label/ticker-content, which are not
+   present in the rendered markup. */
+@media (max-width: 767px) {
+    .notice-ticker {
+        width: auto;
+        max-width: calc(100% - 24px);
+    }
+
+    .notice-label {
+        align-self: stretch;
+        justify-content: center;
+        width: 100%;
+        padding: 7px 12px;
+        border-radius: 6px 6px 0 0;
+        text-align: center;
+    }
+
+    .notice-track {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        padding: 8px 12px;
+    }
+
+    .notice-track marquee {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .notice-track marquee {
+        scrollamount: 0;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
