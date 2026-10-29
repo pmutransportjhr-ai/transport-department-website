@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ═══ SECURITY HEADERS (Audit Fix: DWI/IS/TRANSP/WEB/26-27/187) ═══ -->
+    <!-- #4/#10: Clickjacking Prevention (CWE-1021/CWE-16) -->
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <!-- #9: XSS Protection (CWE-644) -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <!-- #12: Content-Type Sniffing Prevention (CWE-16) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <!-- #6: Browser Cache Control (CWE-525) -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- #7: Referrer Policy (CWE-293) -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Transport Department, Government of Jharkhand | Official Public Portal</title>
+
+    <!-- Favicon -->
+    <link href="img/brand/jhfavicon.ico" rel="icon" type="image/x-icon" />
+
+    <!-- Core Stylesheets -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Skip to main content anchor -->
+    <a id="main-content-anchor" class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+
+    <!-- MAIN HEADER CONTAINER -->
+    <header id="main-header" class="morth-header"></header>
+
+    <!-- NOTIFICATION TICKER CONTAINER -->
+    <div id="notice-ticker-container"></div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content">
+
+        <!-- HERO & KEY DIGNITARIES SECTION -->
+        <section class="hero-main-section">
+            <div class="container-fluid" style="max-width:1360px;">
+                <div class="row">
+                    <!-- MAIN HERO BANNER SLIDER (9 COLS) -->
+                    <div class="col-md-9 col-sm-12 hero-slider-col">
+                        <div id="hero-slider-container"></div>
+                    </div>
+                    <!-- KEY OFFICIALS & DIGNITARIES PANEL (3 COLS) -->
+                    <div class="col-md-3 col-sm-12 hero-officials-col">
+                        <div id="key-officials-container"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAJOR ONLINE SERVICES & CITIZEN PORTALS GRID (FULL WIDTH 8-CARD GRID) -->
+        <section class="citizen-services-section">
+            <div class="container-fluid" style="max-width:1360px;">
+                <div id="online-portals-container"></div>
+            </div>
+        </section>
+
+        <!-- TRANSPORT DEPARTMENT LIVE DASHBOARD METRICS -->
+        <section class="live-dashboard-section">
+            <div id="live-dashboard-container"></div>
+        </section>
+
+        <!-- PUBLIC REPOSITORY DESK (TABBED NOTIFICATIONS, ACTS & FORMS) -->
+        <section class="repository-desk-section">
+            <div id="repository-desk-container"></div>
+        </section>
+
+
+        <!-- Department OFFICIAL SOCIAL MEDIA HUB SECTION -->
+        <section class="social-media-section">
+            <div class="container-fluid" style="max-width:1360px;">
+                <div id="social-media-container"></div>
+            </div>
+        </section>
+
+        <!-- ANIMATED MEDIA & PHOTO GALLERY SHOWCASE -->
+        <section class="media-gallery-section">
+            <div class="container-fluid" style="max-width:1360px;">
+                <div id="media-gallery-container"></div>
+            </div>
+        </section>
+
+        <!-- ROAD SAFETY & KEY INITIATIVES SHOWCASE -->
+        <section class="road-safety-schemes-section">
+            <div class="container-fluid" style="max-width:1360px;">
+                <div id="road-safety-schemes-container"></div>
+            </div>
+        </section>
+
+        <!-- 24 DISTRICT TRANSPORT OFFICES DIRECTORY -->
+        <section class="district-directory-section">
+            <div class="container-fluid" style="max-width:1360px;">
+                <div id="district-directory-container"></div>
+            </div>
+        </section>
+
+        <!-- POLICIES, GOVT PORTALS, PARIVAHAN LINKS & HELPDESK DESK (PRE-FOOTER) -->
+        <section class="bottom-links-section" style="padding:35px 0;background:#ffffff;border-top:1px solid var(--border-color);">
+            <div id="bottom-links-container"></div>
+        </section>
+
+    </main>
+
+    <!-- MAIN FOOTER CONTAINER -->
+    <footer id="main-footer"></footer>
+
+    <!-- Core JavaScript Libraries -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript Data Objects -->
+    <script src="js/data/officialsData.js"></script>
+    <script src="js/data/servicesData.js"></script>
+    <script src="js/data/bannersData.js"></script>
+    <script src="js/data/dashboardData.js"></script>
+    <script src="js/data/notificationsData.js"></script>
+    <script src="js/data/actsRulesData.js"></script>
+    <script src="js/data/formsData.js"></script>
+    <script src="js/data/repositoryData.js"></script>
+    <script src="js/data/navData.js"></script>
+
+    <!-- Dynamic Render Engine & Custom Interactivity -->
+    <script src="js/renderEngine.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+
+</html>

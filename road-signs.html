@@ -1,0 +1,530 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ═══ SECURITY HEADERS (Audit Fix: DWI/IS/TRANSP/WEB/26-27/187) ═══ -->
+    <!-- #4/#10: Clickjacking Prevention (CWE-1021/CWE-16) -->
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <!-- #9: XSS Protection (CWE-644) -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <!-- #12: Content-Type Sniffing Prevention (CWE-16) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <!-- #6: Browser Cache Control (CWE-525) -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- #7: Referrer Policy (CWE-293) -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Road Signs & Traffic Signals Guide | Transport Department, Government of Jharkhand</title>
+    <link href="img/brand/jhfavicon.ico" rel="icon" type="image/x-icon" />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+<body>
+
+    <a id="main-content-anchor" class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+
+    <!-- MAIN HEADER CONTAINER -->
+    <header id="main-header" class="morth-header"></header>
+
+    <!-- NOTIFICATION TICKER CONTAINER -->
+    <div id="notice-ticker-container"></div>
+
+    <!-- PAGE BANNER STRIP -->
+    <div class="page-banner-strip" style="background:var(--primary-green);color:#ffffff;padding:24px 0;border-bottom:3px solid var(--accent-gold);">
+        <div class="container">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                    <h1 style="margin:0;font-size:24px;font-weight:800;font-family:'Outfit',sans-serif;color:#ffffff;"><i class="fa fa-shield" style="color:var(--accent-yellow);"></i> Road Signs & Traffic Signals Guide</h1>
+                    <p style="margin:4px 0 0;color:#e1f0e6;font-size:13.5px;">Comprehensive Guide for Mandatory, Cautionary & Informatory Road Signs</p>
+                </div>
+                <ul class="portal-breadcrumb" style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:#d1e6d8;">
+                    <li><a href="index.html" style="color:#ffffff;"><i class="fa fa-home"></i> Home</a></li>
+                    <li>/</li>
+                    <li style="color:var(--accent-yellow);font-weight:700;">Road Signs & Signals</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content" class="container" style="padding:35px 15px;">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel-box">
+                    <div class="panel-box-header green-header">
+                        <i class="fa fa-shield"></i> For Your Safety
+                    </div>
+                    <div class="panel-box-body" style="padding:0;">
+                        <ul style="list-style:none;padding:0;margin:0;">
+                            <li style="border-bottom:1px solid #edf4f0;"><a href="road-signs.html" style="display:flex;justify-content:space-between;padding:10px 14px;color:#007541;font-weight:800;font-size:13px;background:#f4fbf6;"><span>Road Signs & Signals</span> <i class="fa fa-angle-right"></i></a></li>
+                            <li style="border-bottom:1px solid #edf4f0;"><a href="traffic-rules-regulations.html" style="display:flex;justify-content:space-between;padding:10px 14px;color:#26382b;font-weight:600;font-size:13px;"><span>Traffic Rules & Guidelines</span> <i class="fa fa-angle-right"></i></a></li>
+                            <li style="border-bottom:1px solid #edf4f0;"><a href="causes-of-road-accidents.html" style="display:flex;justify-content:space-between;padding:10px 14px;color:#26382b;font-weight:600;font-size:13px;"><span>Accident Prevention & Support</span> <i class="fa fa-angle-right"></i></a></li>
+                            <li><a href="safety-tips-pedestrian.html" style="display:flex;justify-content:space-between;padding:10px 14px;color:#26382b;font-weight:600;font-size:13px;"><span>Pedestrian & Bus Safety</span> <i class="fa fa-angle-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <article class="panel-box" style="padding:24px;background:#ffffff;border:1px solid #e2ece6;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
+                    
+                    <h3 style="margin-top:0;font-weight:800;color:#007541;font-size:18px;">
+                        Standard Indian Road Signs & Traffic Symbols Manual
+                    </h3>
+                    <p style="font-size:13.5px;color:#555;">Road signs are classified into three main statutory categories under the Motor Vehicles Act: Mandatory Signs, Cautionary Warning Signs, and Informatory Signs. Click the tabs below to switch categories.</p>
+
+                    <!-- Interactive Tab Pills -->
+                    <div class="sign-tabs-bar" style="display:flex;gap:8px;margin-top:20px;margin-bottom:20px;flex-wrap:wrap;">
+                        <button class="sign-tab-btn active" onclick="switchSignTab('mandatory', this)" style="background:#007541;color:#ffffff;border:none;padding:10px 20px;border-radius:20px;font-weight:800;font-size:13.5px;cursor:pointer;">
+                            <i class="fa fa-ban" style="margin-right:6px;"></i> Mandatory Signs
+                        </button>
+                        <button class="sign-tab-btn" onclick="switchSignTab('cautionary', this)" style="background:#f3f8f4;color:#26382b;border:none;padding:10px 20px;border-radius:20px;font-weight:700;font-size:13.5px;cursor:pointer;">
+                            <i class="fa fa-exclamation-triangle" style="margin-right:6px;color:#f3a800;"></i> Cautionary Signs
+                        </button>
+                        <button class="sign-tab-btn" onclick="switchSignTab('informatory', this)" style="background:#f3f8f4;color:#26382b;border:none;padding:10px 20px;border-radius:20px;font-weight:700;font-size:13.5px;cursor:pointer;">
+                            <i class="fa fa-info-circle" style="margin-right:6px;color:#1670f5;"></i> Informatory Signs
+                        </button>
+                    </div>
+
+                    <!-- Tab Panes -->
+                    <div id="sign-panes-container">
+                        <!-- Pane 1: Mandatory -->
+                        <div class="sign-tab-pane" id="pane-mandatory" style="display:block;">
+                            <div style="background:#fff5f6;border-left:4px solid #e83b50;padding:12px 16px;border-radius:6px;margin-bottom:18px;">
+                                <h4 style="margin:0;font-weight:800;color:#e83b50;font-size:15px;"><i class="fa fa-ban"></i> Mandatory / Regulatory Road Signs</h4>
+                                <p style="margin:4px 0 0;font-size:13px;color:#444;">Violation of mandatory road signs is a punishable offense under Section 177 & Section 179 of the Motor Vehicles Act 1988.</p>
+                            </div>
+
+                            <div class="row" style="display:flex;flex-wrap:wrap;">
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-stop-circle"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">STOP</h5>
+                                        <small style="color:#666;">Octagonal Red Sign - Full Stop Obligatory Before Proceeding</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-hand-paper-o"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">GIVE WAY</h5>
+                                        <small style="color:#666;">Inverted Triangle - Yield Right of Way to Oncoming Traffic</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-ban"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">NO ENTRY</h5>
+                                        <small style="color:#666;">Circular Red Ring - Entry Strictly Prohibited for All Vehicles</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-arrow-right"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">ONE WAY TRAFFIC</h5>
+                                        <small style="color:#666;">One Direction Arrow Crossed - Traffic Permitted in One Direction</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-times-circle"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">RIGHT TURN PROHIBITED</h5>
+                                        <small style="color:#666;">Red Bar Across Right Arrow - No Right Turn Allowed</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-undo"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">U-TURN PROHIBITED</h5>
+                                        <small style="color:#666;">Curved U-Arrow Crossed Out - U-Turns Strictly Banned</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-volume-off"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">NO HONKING</h5>
+                                        <small style="color:#666;">Horn Prohibited Zone (Quiet Zone near Hospitals & Schools)</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-tachometer"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">SPEED LIMIT (50 km/h)</h5>
+                                        <small style="color:#666;">Red Bordered Number - Maximum Permissible Speed</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-arrows-h"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">NO OVERTAKING</h5>
+                                        <small style="color:#666;">Two Overtaking Cars Crossed - Overtaking Strictly Prohibited</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-truck"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">LOAD LIMIT (5 TONNES)</h5>
+                                        <small style="color:#666;">Circle with Weight Limit - Maximum Gross Vehicle Weight</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-arrows-v"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">HEIGHT LIMIT (3.5 METERS)</h5>
+                                        <small style="color:#666;">Vertical Arrows - Maximum Vehicle Clearance Height</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#ffebee;color:#e83b50;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-car"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#e83b50;">NO PARKING</h5>
+                                        <small style="color:#666;">Blue Circle with Diagonal Red Slash - No Vehicle Parking</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pane 2: Cautionary -->
+                        <div class="sign-tab-pane" id="pane-cautionary" style="display:none;">
+                            <div style="background:#fffdf4;border-left:4px solid #f3a800;padding:12px 16px;border-radius:6px;margin-bottom:18px;">
+                                <h4 style="margin:0;font-weight:800;color:#b88600;font-size:15px;"><i class="fa fa-exclamation-triangle"></i> Cautionary / Warning Road Signs</h4>
+                                <p style="margin:4px 0 0;font-size:13px;color:#444;">Cautionary signs warn drivers of potential hazards ahead so speed can be reduced in advance.</p>
+                            </div>
+
+                            <div class="row" style="display:flex;flex-wrap:wrap;">
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-level-up"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">SHARP LEFT TURN</h5>
+                                        <small style="color:#666;">Triangular Warning - Steep Curve Ahead to Left</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-level-down"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">SHARP RIGHT TURN</h5>
+                                        <small style="color:#666;">Triangular Warning - Steep Curve Ahead to Right</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-undo"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">HAIR PIN BEND</h5>
+                                        <small style="color:#666;">U-Turn Bend - Sharp Hairpin Bend Ahead in Mountain/Ghat Roads</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-male"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">PEDESTRIAN CROSSING</h5>
+                                        <small style="color:#666;">Zebra Crossing or School Zone Ahead</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-graduation-cap"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">SCHOOL AHEAD</h5>
+                                        <small style="color:#666;">School Children Crossing Zone - Reduce Speed to 20 km/h</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-road"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">NARROW BRIDGE</h5>
+                                        <small style="color:#666;">Carriageway Narrows at Upcoming Bridge Passage</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-warning"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">SLIPPERY ROAD</h5>
+                                        <small style="color:#666;">Wet, Oily, or Loose Gravel Surface - Drive Cautiously</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-refresh"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">ROUNDABOUT AHEAD</h5>
+                                        <small style="color:#666;">Circular Junction Ahead - Give Way to Right Traffic</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-angle-double-up"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">STEEP ASCENT</h5>
+                                        <small style="color:#666;">Steep Uphill Grade - Engage Low Gear</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-wrench"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">MEN AT WORK</h5>
+                                        <small style="color:#666;">Road Repair / Maintenance Activity - Reduce Speed</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-subway"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">UNGUARDED RAILWAY CROSSING</h5>
+                                        <small style="color:#666;">Level Crossing Without Gates 200m Ahead - Stop & Look</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#fff8e1;color:#f3a800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-area-chart"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#b88600;">SPEED BREAKER / BUMP</h5>
+                                        <small style="color:#666;">Raised Speed Hump Ahead - Slow Down Vehicle</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pane 3: Informatory -->
+                        <div class="sign-tab-pane" id="pane-informatory" style="display:none;">
+                            <div style="background:#f4f9ff;border-left:4px solid #1670f5;padding:12px 16px;border-radius:6px;margin-bottom:18px;">
+                                <h4 style="margin:0;font-weight:800;color:#1670f5;font-size:15px;"><i class="fa fa-info-circle"></i> Informatory Road Signs</h4>
+                                <p style="margin:4px 0 0;font-size:13px;color:#444;">Informatory signs guide drivers to medical facilities, petrol pumps, parking lots, and destination distances.</p>
+                            </div>
+
+                            <div class="row" style="display:flex;flex-wrap:wrap;">
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-hospital-o"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">HOSPITAL AHEAD</h5>
+                                        <small style="color:#666;">Medical Emergency Center & Trauma Care Nearby</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-medkit"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">FIRST AID POST</h5>
+                                        <small style="color:#666;">Medical First Aid & Emergency Dispensary</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-cutlery"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">EATING PLACE / RESTAURANT</h5>
+                                        <small style="color:#666;">Highway Food, Meals & Refreshments Service</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-car"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">PARKING FACILITY (P)</h5>
+                                        <small style="color:#666;">Designated Public Vehicle Parking Area</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-tint"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">PETROL PUMP / FUEL STATION</h5>
+                                        <small style="color:#666;">24/7 Motor Fuel & EV Charging Station</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-phone"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">PUBLIC TELEPHONE</h5>
+                                        <small style="color:#666;">Emergency Highway Phone Booth</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-bed"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">RESTING PLACE / HOTEL</h5>
+                                        <small style="color:#666;">Overnight Traveler Lodging & Rest Area</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-bus"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">BUS STOP</h5>
+                                        <small style="color:#666;">Designated Passenger Bus Passenger Stop</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">TOLL PLAZA AHEAD</h5>
+                                        <small style="color:#666;">FASTag Automated Electronic Toll Gate</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-map-signs"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">DESTINATION & DISTANCE</h5>
+                                        <small style="color:#666;">Green Overhead Direction & Kilometer Board</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-coffee"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">WAY SIDE AMENITIES</h5>
+                                        <small style="color:#666;">Highway Food Court, Restroom & Washroom Plaza</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6" style="margin-bottom:16px;">
+                                    <div style="border:1px solid #e2ece6;border-radius:8px;padding:16px;text-align:center;background:#ffffff;height:100%;box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                                        <div style="width:48px;height:48px;border-radius:50%;background:#e3f2fd;color:#1670f5;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;">
+                                            <i class="fa fa-train"></i>
+                                        </div>
+                                        <h5 style="font-weight:800;margin:0 0 4px;color:#1670f5;">RAILWAY STATION</h5>
+                                        <small style="color:#666;">Connecting Railway Station & Junction</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- MAIN FOOTER CONTAINER -->
+    <footer id="main-footer" class="main-footer"></footer>
+
+    <!-- SCRIPTS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/data/navData.js"></script>
+    <script src="js/data/notificationsData.js"></script>
+    <script src="js/renderEngine.js"></script>
+    <script>
+        function switchSignTab(tabId, btn) {
+            document.querySelectorAll('.sign-tab-btn').forEach(function(b) {
+                b.classList.remove('active');
+                b.style.background = '#f3f8f4';
+                b.style.color = '#26382b';
+            });
+            document.querySelectorAll('.sign-tab-pane').forEach(function(p) {
+                p.style.display = 'none';
+            });
+
+            btn.classList.add('active');
+            btn.style.background = '#007541';
+            btn.style.color = '#ffffff';
+
+            var targetPane = document.getElementById('pane-' + tabId);
+            if (targetPane) {
+                targetPane.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            RenderEngine.initHeader();
+            RenderEngine.initTicker();
+            RenderEngine.initFooter();
+        });
+    </script>
+    <script src=" js/custom.js\></script>`n</body>
+</html>
+

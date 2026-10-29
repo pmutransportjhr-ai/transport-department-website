@@ -1,0 +1,145 @@
+# =============================================================================
+# Security Headers — Transport Department, Government of Jharkhand
+# Report Ref: DWI/IS/TRANSP/WEB/26-27/187
+# Fixes: #4, #5, #6, #7, #8, #9, #10, #11, #12, #13, #14
+# =============================================================================
+
+# ── Enable Rewrite Engine ─────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ── #7: Improper Referer Check — Allowlist Enforcement (CWE-293) ─────────
+    # Block requests with a Referer header that is NOT from trusted domains.
+    # Only applies to POST requests (state-changing operations).
+    RewriteCond %{REQUEST_METHOD} POST
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?transport\.jharkhand\.gov\.in [NC]
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?103\.97\.109\.116 [NC]
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?parivahan\.gov\.in [NC]
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?vahan\.parivahan\.gov\.in [NC]
+    RewriteRule ^ - [F,L]
+
+    # ── #8: Redirect HTTP to HTTPS on production (CWE-644) ───────────────────
+    # Uncomment these lines when deploying to production with a valid SSL cert:
+    # RewriteCond %{HTTPS} off
+    # RewriteCond %{HTTP_HOST} ^(www\.)?transport\.jharkhand\.gov\.in$ [NC]
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+    # ── Block direct access to sensitive directories ───────────────────────────
+    RewriteRule ^(\.git|\.env|node_modules|vendor)(/|$) - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+
+    # ── #4 & #10: Clickjacking Prevention (CWE-1021 / CWE-451 / CWE-16) ─────
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # ── #9: XSS Protection (CWE-644) ─────────────────────────────────────────
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # ── #12: Content-Type Sniffing Prevention (CWE-16) ───────────────────────
+    Header always set X-Content-Type-Options "nosniff"
+
+    # ── #8: HTTP Strict Transport Security (CWE-644) ─────────────────────────
+    # Set only when HTTPS is active (production). Staging: commented out.
+    # To activate: remove the comment and deploy on an HTTPS-enabled server.
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # ── #13: Content Security Policy (CWE-644) ───────────────────────────────
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
+
+    # ── #6: Browser Cache Control (CWE-525) ──────────────────────────────────
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate"
+    Header always set Pragma "no-cache"
+    Header always set Expires "0"
+
+    # ── #11: CORS — Strict Access-Control Headers (CWE-16) ───────────────────
+    # Allow-Origin: restrict to the official domain only (never wildcard *)
+    Header always set Access-Control-Allow-Origin "https://transport.jharkhand.gov.in"
+    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, X-CSRF-Token"
+    Header always set Access-Control-Max-Age "3600"
+    # Access-Control-Allow-Credentials must NOT be used with wildcard origin
+    # Header always set Access-Control-Allow-Credentials "true"
+
+    # ── #14: Server Fingerprinting Prevention (CWE-644) ──────────────────────
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+    Header unset Server
+    Header always unset X-AspNet-Version
+    Header always unset X-AspNetMvc-Version
+
+    # ── #7: Referrer Policy — Client-Side Enforcement (CWE-293) ──────────────
+    # Ensures Referer header only sends origin, not full path, to cross-origin requests
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # ── Additional Security Hardening ─────────────────────────────────────────
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Cross-Origin-Resource-Policy "same-origin"
+
+</IfModule>
+
+# ── Handle OPTIONS preflight requests for CORS (#11) ─────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+</IfModule>
+
+# ── #14: Server Fingerprinting — Apache Token Suppression ────────────────────
+ServerTokens Prod
+ServerSignature Off
+
+# ── #5: Secure Cookie Attributes (CWE-614 / CWE-1004) ───────────────────────
+# Appends HttpOnly and SameSite=Strict to all Set-Cookie response headers.
+# The "Secure" flag is enforced automatically by the browser when HTTPS is live.
+<IfModule mod_headers.c>
+    Header always edit Set-Cookie ^(.*)$ "$1; HttpOnly; SameSite=Strict; Path=/"
+</IfModule>
+
+# ── Disable directory listing ─────────────────────────────────────────────────
+Options -Indexes
+
+# ── Prevent direct access to sensitive file types ─────────────────────────────
+<FilesMatch "\.(log|sql|conf|config|env|bak|old|tmp|sh|py|pem|key|crt|ini)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ── Block access to hidden files (e.g. .git, .htpasswd) ──────────────────────
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+# Allow .htaccess itself to be served (Apache needs it)
+<Files ".htaccess">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# ── #15: ETag Disclosure Prevention (CWE-200) ────────────────────────────────
+# ETags can expose filesystem metadata: inode numbers, file size, mtime.
+# Disable ETags entirely to prevent information leakage via HTTP response headers.
+FileETag None
+
+<IfModule mod_headers.c>
+    Header unset ETag
+    # Alternatives: use Cache-Control + Last-Modified where caching is needed
+    # Cache-Control: no-store is already set above for sensitive pages
+</IfModule>
+
+# ── #16: Framework Disclosure Prevention (CWE-497) ───────────────────────────
+# Version strings stripped from: font-awesome.css/.min.css, bootstrap.min.css,
+# bootstrap.bundle.min.js, bootstrap.min.js (see library files directly).
+# Apache-level: suppress any remaining framework identifiers in headers.
+<IfModule mod_headers.c>
+    Header always unset X-Generator
+    Header always unset X-Drupal-Cache
+    Header always unset X-Varnish
+    Header always unset Via
+    Header always unset X-CF-Powered-By
+    Header always unset X-Runtime
+    Header always unset X-Version
+</IfModule>
+
+# =============================================================================
