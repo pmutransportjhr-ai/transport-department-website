@@ -30,7 +30,7 @@ const bannersData = [
         subtitle: "Promoting safer roads, automated pollution control centers, FASTag toll integration, and transparent administration.",
         badge: "ROAD SAFETY INITIATIVES",
         highlight: "SAFE ROADS, BETTER LIVES",
-        image: "img/banners/newslider333.jpg",
+        image: "img/banners/Jharkhand%20Road%20Safety%20Awareness%20Campaign.png",
         buttonText: "Safety Guidelines",
         buttonUrl: "road-signs.html"
     }
