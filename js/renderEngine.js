@@ -187,7 +187,7 @@
                         </a>
                         <div class="header-actions">
                             <form class="portal-search" action="how_do_i.html" role="search">
-                                <label class="sr-only" for="portal-search-input">Search portal</label>
+                                <label class="visually-hidden" for="portal-search-input">Search portal</label>
                                 <input id="portal-search-input" type="search" name="q" placeholder="Search portal (Vahan, Sarathi, Rules)">
                                 <button type="submit" aria-label="Search"><i class="fa fa-search"></i></button>
                             </form>
