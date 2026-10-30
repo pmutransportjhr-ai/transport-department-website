@@ -42,7 +42,7 @@
         });
 
         // Universal Accordion Collapse Delegation Fix (Bootstrap 5 compatible)
-        $(document).on('click', '[data-bs-toggle="collapse"]', function(e) {
+        $(document).on('click', '[data-bs-toggle="collapse"]:not(.navbar-toggler)', function(e) {
             var targetId = $(this).attr('href') || $(this).attr('data-bs-target');
             if (!targetId || targetId === '#') return;
 
