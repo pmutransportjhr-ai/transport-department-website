@@ -1,49 +1,45 @@
-# Nginx security deployment guide
+# Security remediation deployment guide
 
-This repository is a static website. Committing these files does not activate response headers on the server: an administrator must install the snippets into the active Nginx configuration and reload Nginx after a successful syntax test.
+This repository contains the static Transport Department portal. Several audit findings target the separate HTTP server and the `/login` authentication service. **A Git commit does not activate Nginx settings or modify an upstream Express/session application.** The server owner must apply and verify the relevant snippets.
 
-## 1. Back up and identify the active configuration
-
-Run on the server:
+## 1. Back up and identify active configuration
 
 ```sh
 sudo nginx -T > "$HOME/nginx-config-before-security.txt" 2>&1
-sudo nginx -T 2>&1 | grep -E 'configuration file|server_name|root '
+sudo nginx -T 2>&1 | grep -E 'configuration file|server_name|root |proxy_pass'
+nginx -V 2>&1
 ```
 
-Find the active `server {}` block serving the staging host and the production host. The repository's `.htaccess` is ignored by Nginx and cannot implement response headers on an Nginx server.
+The `.htaccess` file is ignored by Nginx. Do not create duplicate `server {}` blocks for an existing hostname; merge these directives into the active configuration.
 
-## 2. Install the snippets and error page
+## 2. Install snippets and generic error page
 
-Review the files first, then copy the snippets into a system-owned configuration directory and copy `50x.html` into the site's document root:
+Copy from the checked-out branch after reviewing each file:
 
 ```sh
 sudo install -d -m 0755 /etc/nginx/snippets
 sudo install -m 0644 security/nginx-server-hardening.conf /etc/nginx/snippets/transport-server-hardening.conf
 sudo install -m 0644 security/nginx-response-headers.conf /etc/nginx/snippets/transport-response-headers.conf
 sudo install -m 0644 security/nginx-production-hsts.conf /etc/nginx/snippets/transport-production-hsts.conf
+sudo install -m 0644 security/nginx-production-http-redirect.conf /etc/nginx/snippets/transport-production-http-redirect.conf
+sudo install -m 0644 security/nginx-auth-cookie-flags.conf /etc/nginx/snippets/transport-auth-cookie-flags.conf
 sudo install -m 0644 50x.html /PATH/TO/ACTIVE/DOCUMENT-ROOT/50x.html
 ```
 
-Replace `/PATH/TO/ACTIVE/DOCUMENT-ROOT` with the actual `root` directory from the active server block. Do not run the commands with the placeholder unchanged.
+Replace the document-root placeholder with the actual path from `nginx -T`.
 
-## 3. Configure the staging server without forcing HTTPS
+## 3. Staging configuration (HTTP stays HTTP)
 
-Inside the staging site's existing `server {}` block, add:
+Inside the existing HTTP staging `server {}` block:
 
 ```nginx
 include /etc/nginx/snippets/transport-server-hardening.conf;
 include /etc/nginx/snippets/transport-response-headers.conf;
 
 error_page 500 502 503 504 /50x.html;
-
-location = /50x.html {
-    internal;
-}
+location = /50x.html { internal; }
 
 location ~* \.html$ {
-    # Repeat the response headers because local add_header directives can replace
-    # inherited add_header values on commonly deployed Nginx versions.
     include /etc/nginx/snippets/transport-response-headers.conf;
     add_header Cache-Control "no-store, no-cache, must-revalidate" always;
     add_header Pragma "no-cache" always;
@@ -51,52 +47,99 @@ location ~* \.html$ {
 }
 ```
 
-Merge these directives into the existing server configuration rather than creating a duplicate server block for the same hostname. This configuration intentionally has no HTTP-to-HTTPS redirect and no HSTS on staging.
+No HTTP redirect and no HSTS are used on staging. Do not set `Secure` cookies on a staging environment that must remain HTTP if the staging authentication flow depends on those cookies.
 
-The HTML pages receive no-store cache directives. Public versioned CSS, JavaScript, images, and PDFs can use an appropriate cache policy if required; do not blindly apply no-store to every static asset.
+Nginx `add_header` inheritance changes when a nested `location {}` contains any `add_header`. Repeat the security-header include inside such locations or use a tested Nginx version with header-inheritance merging. Verify every response path, not just `/`.
 
-## 4. Configure production HTTPS and HSTS separately
+## 4. Production HTTPS and HSTS (separate from staging)
 
-First confirm production has a valid TLS certificate, all first-party assets work over HTTPS, and the HTTP-to-HTTPS redirect is correct for the production hostname. Do not change staging as part of this step.
+First provision a valid production certificate and confirm that every first-party asset and login flow works over HTTPS. The certificate/key paths below are examples; replace them with the paths provisioned on the server.
 
-Only within the production HTTPS `server {}` block, include:
+HTTP port 80 production server:
 
 ```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name transport.jharkhand.gov.in;
+    include /etc/nginx/snippets/transport-production-http-redirect.conf;
+}
+```
+
+HTTPS production server (merge into the actual existing server block):
+
+```nginx
+listen 443 ssl;
+listen [::]:443 ssl;
+ssl_certificate /PATH/TO/PRODUCTION/FULLCHAIN.pem;
+ssl_certificate_key /PATH/TO/PRODUCTION/PRIVATE-KEY.pem;
+ssl_protocols TLSv1.2 TLSv1.3;
+
+include /etc/nginx/snippets/transport-server-hardening.conf;
+include /etc/nginx/snippets/transport-response-headers.conf;
 include /etc/nginx/snippets/transport-production-hsts.conf;
 ```
 
-If a nested `location {}` block sets any `add_header` directives, include the relevant response-header and HSTS snippets there too, or use a tested Nginx version/configuration that supports header inheritance merging. Do not enable `includeSubDomains` or `preload` until all affected hostnames are ready for HTTPS.
+HSTS is intentionally emitted only in the production HTTPS server. The snippet starts with `max-age=31536000` and no `includeSubDomains`/preload. Do not expand to all subdomains until each one is verified HTTPS-ready.
 
-## 5. Cookies, CORS, and CSRF require endpoint-specific decisions
+## 5. Login/session cookies (upstream app)
 
-- This repository does not implement a server-side session or state-changing POST API. Do not treat a browser-generated hidden token or a Referer check as CSRF protection. Any backend/API that changes state must issue and validate its CSRF token server-side and validate authorization independently.
-- The static site's visible search forms are GET navigation forms. If another upstream service sets cookies, configure `Secure`, `HttpOnly`, and an appropriate `SameSite` attribute in that service or on the relevant proxy location. Add `Secure` only when served over HTTPS, and do not blindly overwrite cookie attributes used by SSO.
-- CORS is not a generic hardening header. No global `Access-Control-Allow-Origin` is added. If an API genuinely needs cross-origin access, set exact trusted origins and required methods/headers only on that API, and handle preflight requests there.
+The static portal does not issue an authentication session cookie. For the upstream authentication service, include `transport-auth-cookie-flags.conf` **inside the actual HTTPS proxy location that returns the session cookie**. It requires Nginx 1.19.3+ and sets `Secure`, `HttpOnly`, and `SameSite=Lax`. It intentionally does not force a `Domain` attribute (host-only cookies are more restrictive). Set the intended `Path` and expiry/max-age in the backend session configuration.
 
-## 6. Validate before reload
+Do not apply cookie flags globally to unrelated third-party cookies. If a tested SSO callback genuinely requires cross-site cookies, use `SameSite=None; Secure` only for that cookie. Inspect the actual `Set-Cookie` response from login and authenticated routes.
 
-After editing the active configuration:
+## 6. Express authentication service: errors and CSRF
+
+The audit evidence shows an Express fingerprint on the `/login` route. If that route is served by the Express application, the backend owner should:
+
+- call `app.disable('x-powered-by')`;
+- use `security/express-error-handler.example.js` after routes to log details server-side and return generic responses;
+- use the server-issued synchronizer token pattern in `security/express-csrf-integration.example.js` after the production session middleware and before every state-changing route;
+- ensure the session cookie is `HttpOnly`, `Secure` on HTTPS, `SameSite=Lax` (or narrowly reviewed `None; Secure` for required SSO), and has an intentional Path/expiry;
+- use a persistent production session store, never Express' default MemoryStore.
+
+The examples are integration patterns, not a drop-in patch for a backend that is absent from this repository. Preserve existing login/SSO behavior and test it before deployment. Referer/Origin checks are defense-in-depth and do not replace CSRF tokens or authorization checks.
+
+For Nginx-proxied upstream errors, set `proxy_intercept_errors on;` in the relevant proxy location and map 500/502/503/504 to the generic `50x.html` page. Confirm the upstream does not itself return stack traces or framework/database details in its 4xx/5xx bodies.
+
+## 7. CORS and browser security headers
+
+The response-header snippet permits only `https://transport.jharkhand.gov.in` for read-only `GET, HEAD, OPTIONS` requests; it does not use wildcard origin or credential sharing. This is a deliberately narrow policy for the public static portal. If an API needs a different origin/method/header or credentials, scope the CORS configuration to that API location and obtain the API owner/security approval. Do not expand to wildcard.
+
+The snippet sets:
+- `X-Frame-Options: SAMEORIGIN` plus CSP `frame-ancestors 'self'`;
+- `X-Content-Type-Options: nosniff`;
+- a CSP baseline;
+- `X-XSS-Protection: 0`, intentionally disabling the deprecated legacy filter rather than enabling the unsafe `1; mode=block` behavior;
+- `Referrer-Policy` and `Permissions-Policy`.
+
+The current CSP retains `'unsafe-inline'` to avoid breaking existing inline scripts/styles and HTML event handlers. It is a compatibility baseline, not the final strongest CSP. Move inline code into reviewed external files or use nonce/hash policies, then remove `unsafe-inline`. Check browser console and all page interactions after CSP deployment.
+
+## 8. Server fingerprinting and ETag
+
+`server_tokens off` suppresses the Nginx version; by itself it may leave `Server: nginx`. `etag off` disables ETags in the Nginx server scope. If the server banner must be removed, install/load the headers-more module and only then include `security/nginx-headers-more-optional.conf`. Do not include that file unless `nginx -V`/module configuration confirms the module is loaded; otherwise `nginx -t` will fail.
+
+For the proxied Express app, `app.disable('x-powered-by')` and removal of unused framework/version headers are separate tasks. Removing a version string is not a substitute for patching the framework.
+
+## 9. Validate and capture production evidence
+
+After the edits:
 
 ```sh
 sudo nginx -t
+# Reload only if the test passes:
 sudo systemctl reload nginx
-```
 
-Do not reload if `nginx -t` reports errors. Then inspect response headers from the actual hosts:
-
-```sh
 curl -sSI http://STAGING-HOST/
-curl -sSI http://STAGING-HOST/privacy.html
-curl -sSI https://PRODUCTION-HOST/
-curl -sSI https://PRODUCTION-HOST/privacy.html
+curl -sSI https://transport.jharkhand.gov.in/
+curl -sSI https://transport.jharkhand.gov.in/login
 ```
 
-Replace the host placeholders with actual hostnames. Confirm the response includes `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Content-Security-Policy`, and the expected cache policy. Verify HSTS only on production HTTPS. Test the pages in a browser for CSP console violations before treating the CSP rollout as complete.
+Replace `STAGING-HOST` with the real staging hostname. Save the full outputs. Confirm on production HTTPS: redirect from HTTP, TLS protocol/certificate, HSTS, X-Frame-Options, nosniff, CSP, CORS, no-store on HTML/login, no ETag where disabled, and cookie flags on real authenticated responses. Check that the `Server` header is removed only if the optional module is installed. Test real browser pages with DevTools Network and Console, then rerun the security scanner.
 
-## 7. Operational notes and limitations
+## 10. Case disposition notes
 
-- `server_tokens off` suppresses the Nginx version but does not necessarily remove the `Server: nginx` header. Complete removal may require a supported module or an upstream WAF/reverse proxy.
-- `etag off` disables ETags for the server scope where this snippet is included. Confirm that this is acceptable for the site's cache/CDN configuration.
-- The current CSP retains `'unsafe-inline'` for compatibility with inline scripts/handlers in the existing pages. This is an initial baseline, not the final strongest policy. Move inline code to reviewed external files or nonce/hash-based execution and then remove `'unsafe-inline'`.
-- `X-XSS-Protection` is intentionally not emitted because it is a deprecated legacy control; CSP and correct output handling are preferred.
-- Re-run the external security audit after server activation. A Git commit alone cannot prove that live response headers, cookies, TLS, or error responses have changed.
+- `X-XSS-Protection: 0` is the modern safe disabling value for the deprecated header. Ask the auditor to accept this rather than `1; mode=block`.
+- CORS is restricted to the official portal origin and read-only methods. If the finding was for a different API or origin, obtain that API's exact CORS requirement before changing this rule.
+- The public site's Font Awesome version literal has been removed from its CSS, but the CSS remains recognizable as Font Awesome. This informational item should be judged on patched component status, not obscurity alone.
+- A local Nginx fixture can verify the syntax and expected behavior of these snippets, but it cannot prove production has deployed them.
