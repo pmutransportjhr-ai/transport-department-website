@@ -70,7 +70,7 @@
 .fa.fa-pull-right {
   margin-left: .3em;
 }
-/* Deprecated as of 4.4.0 */
+/* Legacy icon compatibility note. */
 .pull-right {
   float: right;
 }
