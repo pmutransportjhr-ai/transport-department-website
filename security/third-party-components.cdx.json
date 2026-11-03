@@ -1,0 +1,44 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:9c94d8ad-68f7-4a79-9ea1-20261103a001",
+  "version": 1,
+  "metadata": {
+    "tools": [
+      {
+        "vendor": "Transport Department Portal",
+        "name": "manual-vendored-asset-inventory",
+        "version": "1.0.0"
+      }
+    ],
+    "properties": [
+      { "name": "inventory:note", "value": "Versions are recorded from vendored asset banners and the security remediation evidence; update this file whenever these assets change." }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "jquery",
+      "version": "4.0.0",
+      "purl": "pkg:npm/jquery@4.0.0",
+      "scope": "required",
+      "description": "Vendored browser library at js/jquery.min.js"
+    },
+    {
+      "type": "library",
+      "name": "bootstrap",
+      "version": "5.3.8",
+      "purl": "pkg:npm/bootstrap@5.3.8",
+      "scope": "required",
+      "description": "Vendored browser library at js/bootstrap.bundle.min.js and css/bootstrap.min.css"
+    },
+    {
+      "type": "library",
+      "name": "font-awesome",
+      "version": "4.4.0",
+      "purl": "pkg:npm/font-awesome@4.4.0",
+      "scope": "required",
+      "description": "Vendored icon font/CSS; the explicit version literal is removed from shipped CSS, so retain this inventory entry from the audit records and re-verify before changing it."
+    }
+  ]
+}

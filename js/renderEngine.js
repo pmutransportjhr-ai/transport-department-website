@@ -269,7 +269,8 @@
             this.renderRepositoryDesk('All Categories');
             this.renderRoadSafetySchemes();
             this.renderMediaGallery('All');
-            this.renderSocialMediaHub();
+            // Temporarily disabled at user request; the homepage section is commented out in index.html.
+            // this.renderSocialMediaHub();
             this.renderDistrictDirectory();
             this.renderBottomLinks();
         },
@@ -605,16 +606,21 @@
                     url: "pdf/PREOWNED.pdf",
                     linkText: "Check Scrappage Norms"
                 },
-                {
-                    title: "IRC Road Safety Signs",
-                    badge: "SAFETY",
-                    badgeBg: "#f3a800",
-                    icon: "fa-shield",
-                    color: "#f3a800",
-                    desc: "Comprehensive guidelines on Mandatory, Cautionary, and Informatory traffic signboards approved by Indian Roads Congress.",
-                    url: "road-signs.html",
-                    linkText: "Explore Road Signs"
-                }
+                /*
+                 * Temporarily disabled at user request to keep the homepage to three topics.
+                 * Re-enable this card only after a future content review.
+                 *
+                 * {
+                 *     title: "IRC Road Safety Signs",
+                 *     badge: "SAFETY",
+                 *     badgeBg: "#f3a800",
+                 *     icon: "fa-shield",
+                 *     color: "#f3a800",
+                 *     desc: "Comprehensive guidelines on Mandatory, Cautionary, and Informatory traffic signboards approved by Indian Roads Congress.",
+                 *     url: "road-signs.html",
+                 *     linkText: "Explore Road Signs"
+                 * }
+                 */
             ];
 
             let cardsHtml = schemes.map(s => `

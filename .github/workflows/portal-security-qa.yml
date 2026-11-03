@@ -1,0 +1,70 @@
+name: Portal security and browser QA
+
+on:
+  push:
+    branches:
+      - security/audit-remediation-2026-10
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portal-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static-validation:
+    name: Static checks and deployment-package safety
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Validate source, dependency versions, Nginx rules and SBOM
+        run: node scripts/verify-static-site.cjs
+      - name: Build safe static website package
+        run: bash scripts/build-deployment-package.sh "$RUNNER_TEMP/transport-portal-webroot.tar.gz"
+      - name: Upload deployment package for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: transport-portal-webroot
+          path: ${{ runner.temp }}/transport-portal-webroot.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  browser-regression:
+    name: Chromium homepage regression
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Install pinned Playwright runtime
+        run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.64.1
+      - name: Install Chromium and system dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Run mobile and desktop regression
+        run: node tests/portal-browser-smoke.cjs
+
+  software-composition-and-secret-scan:
+    name: Vendored library SBOM and repository scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.2.4
+      - name: Scan vendored component SBOM for known vulnerabilities
+        run: trivy sbom --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 security/third-party-components.cdx.json
+      - name: Scan repository for high and critical secrets or misconfiguration
+        run: trivy fs --scanners secret,misconfig --severity HIGH,CRITICAL --exit-code 1 --skip-dirs .git --skip-dirs node_modules .

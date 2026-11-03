@@ -76,3 +76,19 @@ The test environment could not connect to `103.97.109.116` on ports 80/443, and 
 - NVD CVE-2020-11022: https://nvd.nist.gov/vuln/detail/CVE-2020-11022
 - MDN X-XSS-Protection: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection
 - MDN CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
+
+
+## Follow-up changes recorded — 3 November 2026
+
+The remediation branch now contains:
+- Homepage markup commenting out the Official Social Media Hub & Announcements section and a disabled homepage renderer call.
+- Three active homepage scheme cards; the fourth IRC Road Safety Signs card is retained only as a comment.
+- Nginx public-path protection for `/security/` and dotfiles, preserving the ACME `/.well-known/acme-challenge/` path.
+- A deployment archive builder which excludes server-only security files, repository metadata, workflows, tests, scripts, historical backups and Apache-only `.htaccess`.
+- A corrected shared CORS comment and no global CORS response header.
+- A Playwright Chromium regression suite for mobile/desktop navigation, three-card count, hidden social section, local assets and uncaught browser errors.
+- A GitHub Actions workflow for static validation, browser regression, vendored asset SBOM scanning, and repository secret/misconfiguration scanning.
+
+The workflow has not yet been executed at the time this update was committed. These checks are pending until a successful workflow run is visible in GitHub Actions. The existing report's historical local-fixture test results remain unchanged and must not be represented as tests of the final branch assets.
+
+The backend login/session service remains outside this repository. The Express examples remain samples only. See `security/BACKEND-INTEGRATION-REQUIRED.md` for required integration and acceptance tests.

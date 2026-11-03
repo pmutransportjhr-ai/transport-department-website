@@ -1,6 +1,6 @@
 # Security remediation deployment guide
 
-This repository contains the static Transport Department portal. Several audit findings target the separate HTTP server and the `/login` authentication service. **A Git commit does not activate Nginx settings or modify an upstream Express/session application.** The server owner must apply and verify the relevant snippets.
+This repository contains the static Transport Department portal. Several audit findings target the separate HTTP server and the `/login` authentication service. **A Git commit does not activate Nginx settings or modify an upstream Express/session application.** The server owner must apply and verify the relevant snippets. Never upload the repository root directly into `/var/www/html`; the `security/`, `.github/`, `scripts/`, and test files are not public website assets.
 
 ## 1. Back up and identify active configuration
 
@@ -10,7 +10,7 @@ sudo nginx -T 2>&1 | grep -E 'configuration file|server_name|root |proxy_pass'
 nginx -V 2>&1
 ```
 
-The `.htaccess` file is ignored by Nginx. Do not create duplicate `server {}` blocks for an existing hostname; merge these directives into the active configuration.
+The `.htaccess` file is ignored by Nginx. The Nginx deployment archive intentionally excludes it because it contains Apache-only directives. Do not create duplicate `server {}` blocks for an existing hostname; merge these directives into the active configuration.
 
 ## 2. Install snippets and generic error page
 
@@ -20,6 +20,7 @@ Copy from the checked-out branch after reviewing each file:
 sudo install -d -m 0755 /etc/nginx/snippets
 sudo install -m 0644 security/nginx-server-hardening.conf /etc/nginx/snippets/transport-server-hardening.conf
 sudo install -m 0644 security/nginx-response-headers.conf /etc/nginx/snippets/transport-response-headers.conf
+sudo install -m 0644 security/nginx-protect-public-files.conf /etc/nginx/snippets/transport-protect-public-files.conf
 sudo install -m 0644 security/nginx-production-hsts.conf /etc/nginx/snippets/transport-production-hsts.conf
 sudo install -m 0644 security/nginx-production-http-redirect.conf /etc/nginx/snippets/transport-production-http-redirect.conf
 sudo install -m 0644 security/nginx-auth-cookie-flags.conf /etc/nginx/snippets/transport-auth-cookie-flags.conf
@@ -28,6 +29,33 @@ sudo install -m 0644 50x.html /PATH/TO/ACTIVE/DOCUMENT-ROOT/50x.html
 
 Replace the document-root placeholder with the actual path from `nginx -T`.
 
+## 2a. Build a safe static-site deployment archive
+
+This project is deployed by manual file upload to the static Nginx document root. Build the website-only archive from the repository root:
+
+```sh
+bash scripts/build-deployment-package.sh /tmp/transport-portal-webroot.tar.gz
+tar -tzf /tmp/transport-portal-webroot.tar.gz | head -40
+```
+
+The archive builder deliberately excludes repository metadata (`.git`), the server-only `security/` directory, GitHub workflows, tests, scripts, the historical `backup/` directory, and Apache-only `.htaccess`. It contains public website HTML, CSS, JavaScript, images, fonts, and PDFs only. Upload and extract this archive into a staging release directory, verify it, then promote its website files into the Nginx document root. Do not copy `security/` or the repository root into `/var/www/html`.
+
+## 2b. Block hidden files and server-only paths in Nginx
+
+The `nginx-protect-public-files.conf` snippet must be included inside every public `server {}` block. It returns 404 for `/security` and `/security/`, and denies dotfiles/directories such as `.git`, `.env`, and `.htaccess`. It deliberately leaves `/.well-known/acme-challenge/` accessible for Certbot HTTP-01 validation.
+
+After adding the include, validate the configuration and test from the server:
+
+```sh
+sudo nginx -t && sudo systemctl reload nginx
+curl -sSI http://127.0.0.1/.git/config
+curl -sSI http://127.0.0.1/.env
+curl -sSI http://127.0.0.1/.htaccess
+curl -sSI http://127.0.0.1/security/NGINX-DEPLOYMENT-GUIDE.md
+```
+
+The first four requests must not return 200. Keep the ACME challenge path reachable when using Certbot webroot validation.
+
 ## 3. Staging configuration (HTTP stays HTTP)
 
 Inside the existing HTTP staging `server {}` block:
@@ -35,6 +63,7 @@ Inside the existing HTTP staging `server {}` block:
 ```nginx
 include /etc/nginx/snippets/transport-server-hardening.conf;
 include /etc/nginx/snippets/transport-response-headers.conf;
+include /etc/nginx/snippets/transport-protect-public-files.conf;
 
 error_page 500 502 503 504 /50x.html;
 location = /50x.html { internal; }

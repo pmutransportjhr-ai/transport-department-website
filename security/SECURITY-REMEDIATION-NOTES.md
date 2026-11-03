@@ -47,3 +47,16 @@ Local Chromium and isolated local Nginx tests are evidence of the code/configura
 - NVD CVE-2020-11022: https://nvd.nist.gov/vuln/detail/CVE-2020-11022
 - MDN X-XSS-Protection: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection
 - MDN CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
+
+
+## Follow-up branch changes — 3 November 2026
+
+- The homepage Social Media Hub section is commented out in `index.html`; the homepage call to `renderSocialMediaHub()` is disabled.
+- The homepage now activates only three scheme cards. The IRC Road Safety Signs fourth card is retained as a block-commented entry.
+- Added `security/nginx-protect-public-files.conf` to block `/security/` and dotfiles in Nginx while preserving `/.well-known/acme-challenge/` for certificate validation.
+- Corrected the stale CORS comment in the shared response-header include. The shared include does not emit CORS headers.
+- Added a static-site archive builder. It excludes `.git`, `security/`, `.github/`, scripts, tests, the historical backup directory, and Apache-only `.htaccess`.
+- Added a Playwright Chromium smoke/regression test and a GitHub Actions workflow for static checks, mobile/desktop browser checks, a vendored-library CycloneDX SBOM scan, and Trivy secret/misconfiguration scanning.
+- Added an explicit backend integration handoff. The real Express login/session backend is not present in this repository and remains unimplemented by this branch.
+
+CI disposition: workflow source has been added, but no CI result is claimed until the first GitHub Actions run completes successfully. The full backend cases remain open until the actual authentication service is supplied and tested.
