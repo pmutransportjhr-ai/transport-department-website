@@ -106,6 +106,7 @@ ssl_protocols TLSv1.2 TLSv1.3;
 
 include /etc/nginx/snippets/transport-server-hardening.conf;
 include /etc/nginx/snippets/transport-response-headers.conf;
+include /etc/nginx/snippets/transport-protect-public-files.conf;
 include /etc/nginx/snippets/transport-production-hsts.conf;
 ```
 

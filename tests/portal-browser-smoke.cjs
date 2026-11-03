@@ -107,20 +107,44 @@ function assert(condition, message) {
       assert(true, 'Mobile navigation dropdown opens');
     }
 
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.waitForTimeout(150);
-    assert(!(await menuButton.isVisible()), 'Mobile navigation toggle is hidden at desktop width');
-    assert(await page.locator('#mainNavbar').isVisible(), 'Desktop navigation is visible');
+    const responsiveWidths = [360, 390, 430, 768, 991, 992, 1024, 1199, 1280, 1440];
+    const responsiveFailures = [];
+    for (const width of responsiveWidths) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.waitForTimeout(100);
+      const toggleVisible = await menuButton.isVisible();
+      if (toggleVisible !== (width < 992)) responsiveFailures.push(width + 'px navbar toggle visibility mismatch');
+      const overflows = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 4);
+      if (overflows) responsiveFailures.push(width + 'px horizontal overflow');
+    }
+    assert(responsiveFailures.length === 0, 'Responsive navigation/overflow checks at 10 widths' + (responsiveFailures.length ? ': ' + responsiveFailures.join('; ') : ''));
 
-    const brokenLocalImages = await page.locator('img').evaluateAll(images => images
-      .filter(img => img.currentSrc.startsWith(location.origin) && img.complete && img.naturalWidth === 0)
-      .map(img => img.getAttribute('src')));
-    assert(brokenLocalImages.length === 0, 'No broken local homepage images' + (brokenLocalImages.length ? ': ' + brokenLocalImages.join(', ') : ''));
+    // Sweep every top-level public HTML page against the final vendored assets.
+    // backup/ is deliberately excluded because it is not part of the deploy package.
+    const htmlPages = fs.readdirSync(root)
+      .filter(name => name.toLowerCase().endsWith('.html') && name.toLowerCase() !== '50x.html')
+      .sort();
+    const pageLoadFailures = [];
+    const brokenImages = [];
+    for (const htmlPage of htmlPages) {
+      const pageResponse = await page.goto('http://127.0.0.1:4173/' + encodeURIComponent(htmlPage), { waitUntil: 'networkidle' });
+      if (!pageResponse || pageResponse.status() !== 200) {
+        pageLoadFailures.push(htmlPage + ': HTTP ' + (pageResponse ? pageResponse.status() : 'no response'));
+        continue;
+      }
+      const badImages = await page.locator('img').evaluateAll(images => images
+        .filter(img => img.currentSrc.startsWith(location.origin) && img.complete && img.naturalWidth === 0)
+        .map(img => img.getAttribute('src')));
+      if (badImages.length) brokenImages.push(htmlPage + ': ' + badImages.join(', '));
+    }
+    assert(htmlPages.length > 0, 'Root HTML page inventory found');
+    assert(pageLoadFailures.length === 0, 'All root public HTML pages return HTTP 200' + (pageLoadFailures.length ? ': ' + pageLoadFailures.join('; ') : ''));
+    assert(brokenImages.length === 0, 'No broken local images across root HTML pages' + (brokenImages.length ? ': ' + brokenImages.join('; ') : ''));
 
     assert(localFailures.length === 0, 'No failed local asset requests' + (localFailures.length ? ': ' + localFailures.join('; ') : ''));
     assert(pageErrors.length === 0, 'No uncaught browser page errors' + (pageErrors.length ? ': ' + pageErrors.join('; ') : ''));
 
-    console.log('Browser regression completed at 390px and 1440px.');
+    console.log('Browser regression completed for ' + htmlPages.length + ' public pages at 10 responsive widths.');
   } finally {
     if (browserInstance) await browserInstance.close();
     await new Promise(resolve => server.close(resolve));
