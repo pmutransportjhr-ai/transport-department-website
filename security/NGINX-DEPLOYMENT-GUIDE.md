@@ -104,7 +104,7 @@ For Nginx-proxied upstream errors, set `proxy_intercept_errors on;` in the relev
 
 ## 7. CORS and browser security headers
 
-The response-header snippet permits only `https://transport.jharkhand.gov.in` for read-only `GET, HEAD, OPTIONS` requests; it does not use wildcard origin or credential sharing. This is a deliberately narrow policy for the public static portal. If an API needs a different origin/method/header or credentials, scope the CORS configuration to that API location and obtain the API owner/security approval. Do not expand to wildcard.
+The shared response-header snippet deliberately does not emit CORS headers. The static website is same-origin and does not need a global Access-Control-Allow-Origin header. If a separate API genuinely needs cross-origin browser access, configure an exact origin, minimal methods/headers, and OPTIONS handling inside that API's specific location only; do not apply CORS to the whole site, and do not enable credentials or wildcard origins without the API owner/security approval. For IP-based HTTP staging, do not reuse the production domain as an allowed origin.
 
 The snippet sets:
 - `X-Frame-Options: SAMEORIGIN` plus CSP `frame-ancestors 'self'`;
