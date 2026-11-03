@@ -169,6 +169,6 @@ Replace `STAGING-HOST` with the real staging hostname. Save the full outputs. Co
 ## 10. Case disposition notes
 
 - `X-XSS-Protection: 0` is the modern safe disabling value for the deprecated header. Ask the auditor to accept this rather than `1; mode=block`.
-- CORS is restricted to the official portal origin and read-only methods. If the finding was for a different API or origin, obtain that API's exact CORS requirement before changing this rule.
+- The shared configuration intentionally emits no CORS header. If the auditor's finding maps to a genuine cross-origin API, first identify that endpoint and its required browser origin; then configure an exact-origin, minimum-method policy only inside that API location. Do not describe the static website as having a global CORS allowlist.
 - The public site's Font Awesome version literal has been removed from its CSS, but the CSS remains recognizable as Font Awesome. This informational item should be judged on patched component status, not obscurity alone.
 - A local Nginx fixture can verify the syntax and expected behavior of these snippets, but it cannot prove production has deployed them.

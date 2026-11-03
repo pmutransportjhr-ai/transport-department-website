@@ -11,7 +11,7 @@ Target branch: `security/audit-remediation-2026-10`
 - Removed misleading browser-generated CSRF tokens. The backend must issue and verify tokens.
 - Removed global JS error suppression.
 - Fixed page script tags, missing images, navigation breakpoints, mobile menu event handling, ticker implementation, invalid header meta tags and backup entry page.
-- Added a generic 50x page and Nginx snippets for response headers, read-only CORS to the exact official portal origin, no-store HTML caching, server token/ETag controls, production-only HSTS, production HTTP-to-HTTPS redirect and login proxy cookie flags.
+- Added a generic 50x page and Nginx snippets for response headers, public-path protection, no-store HTML caching, server token/ETag controls, production-only HSTS, production HTTP-to-HTTPS redirect and login proxy cookie flags. The shared response-header snippet intentionally emits no global CORS header.
 - Added Express examples for generic errors and server-issued CSRF validation.
 
 ## Audit-item disposition
@@ -28,7 +28,7 @@ Target branch: `security/audit-remediation-2026-10`
 | 8 | HSTS Header Not Implemented (Low) | Separate production-only HSTS snippet; local HTTPS fixture emitted HSTS. | **Open until deployed** on real HTTPS production. Never include on HTTP staging. |
 | 9 | X-XSS Protection Header Is Not Implemented (Low) | Nginx snippet sends X-XSS-Protection: 0 to disable the deprecated legacy browser filter; CSP is supplied. | **Auditor sign-off required.** Do not use the old 1; mode=block value solely for scanner compliance; it is deprecated and can be unsafe. |
 | 10 | X-Frame Header Not Implemented (Low) | Same X-Frame-Options SAMEORIGIN control as #4; local response test passed. | **Open until deployed** and verified. |
-| 11 | Access Control Allowed Origin Header Not Implemented (Low) | Exact origin `https://transport.jharkhand.gov.in`, read-only GET/HEAD/OPTIONS and no credential sharing added; local preflight test passed. | **Open until deployed**. Confirm this exact origin matches the intended integration; do not broaden to wildcard or credentials without API/security-owner approval. |
+| 11 | Access Control Allowed Origin Header Not Implemented (Low) | An earlier isolated exact-origin API preflight fixture passed. The current shared Nginx header snippet does not emit global CORS. | **Open pending scope confirmation.** Identify the audited API/resource and its real allowed origin, then configure only that endpoint if cross-origin access is required. Do not add global or wildcard CORS. |
 | 12 | X-Content Type Header Not Implemented (Low) | X-Content-Type-Options nosniff added; local response test passed. | **Open until deployed** and verified on document and asset responses. |
 | 13 | Content Security Policy Header Not Implemented (Low) | CSP starter policy added; local response test passed. | **Partial.** Policy retains unsafe-inline for legacy inline script/style and needs browser testing on production; move inline code to reviewed scripts or hashes/nonces before removing it. |
 | 14 | Server Fingerprinting (Low) | server_tokens off and proxy X-Powered-By hiding documented; optional headers-more snippet supplied. Local test suppresses Nginx version but still returns Server: nginx. | **Partial/open.** Load the optional headers-more module or use a supported upstream/WAF control; suppress Express x-powered-by in the separate app; re-test live headers. |

@@ -28,10 +28,10 @@ Environment: `127.0.0.1` local fixture, not the production host.
 
 | Test | Result |
 |---|---|
-| HTML response headers | 10/10 assertions passed: X-Frame-Options SAMEORIGIN; X-XSS-Protection 0; nosniff; Referrer-Policy; CSP; exact-origin CORS; HTML no-store; ETag absent; Nginx version hidden |
+| HTML response headers | Historical isolated fixture: 10/10 assertions passed for frame/nosniff/CSP/cache/ETag/version controls. Its exact-origin CORS result was from a prior API fixture and is not a global website policy; the current shared Nginx response-header include emits no CORS header. |
 | Login proxy cookie | 4/4 assertions passed: Secure, HttpOnly, SameSite=Lax, X-Powered-By hidden |
 | Generic HTTP 500 | 3/3 assertions passed: generic message; no stack trace; no SQL details |
-| CORS preflight | 4/4 assertions passed: 204; exact origin; GET/HEAD/OPTIONS; no credentials |
+| CORS preflight | Historical isolated API fixture only: 4/4 assertions passed (204, exact origin, GET/HEAD/OPTIONS, no credentials). This is not evidence of a currently enabled CORS rule on the static website. |
 | Production HTTP redirect fixture | 308 to HTTPS passed |
 | Local HTTPS/HSTS fixture | HSTS max-age=31536000 passed with a self-signed test certificate |
 | Server banner | Partial: version hidden but `Server: nginx` remains. Optional headers-more module was not loaded. |
@@ -56,7 +56,7 @@ Six assertions passed: CSRF token issued; valid POST accepted; invalid token rej
 | 8 | HSTS | Local HTTPS HSTS test passed; production-only deploy pending. Never set on HTTP staging. |
 | 9 | X-XSS Protection | `X-XSS-Protection: 0` disables deprecated legacy browser filtering; requires auditor approval of modern policy rather than obsolete `1; mode=block`. |
 | 10 | X-Frame Header | Local test passed; production deployment pending (same control as #4). |
-| 11 | CORS | Exact-origin, read-only CORS preflight passed locally; confirm endpoint scope and deploy on the correct production endpoint. |
+| 11 | CORS | Earlier isolated exact-origin API preflight fixture passed. Current shared Nginx headers intentionally emit no global CORS; configure a narrow rule only after the affected API and origin are confirmed. |
 | 12 | X-Content-Type | nosniff passed locally; production deployment pending. |
 | 13 | CSP | CSP passed locally; `unsafe-inline` remains for compatibility, deployment/browser regression and hardening still pending. |
 | 14 | Server Fingerprinting | Partial: Nginx version hidden but `Server: nginx` remains; headers-more/upstream/WAF action needed. |
