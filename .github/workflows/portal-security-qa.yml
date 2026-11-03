@@ -62,9 +62,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Install Trivy
-        uses: aquasecurity/setup-trivy@v0.2.4
+      - name: Scan repository for high and critical secrets or misconfiguration
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret,misconfig
+          severity: HIGH,CRITICAL
+          skip-dirs: .git,node_modules
+          exit-code: '1'
       - name: Scan vendored component SBOM for known vulnerabilities
         run: trivy sbom --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 security/third-party-components.cdx.json
-      - name: Scan repository for high and critical secrets or misconfiguration
-        run: trivy fs --scanners secret,misconfig --severity HIGH,CRITICAL --exit-code 1 --skip-dirs .git --skip-dirs node_modules .

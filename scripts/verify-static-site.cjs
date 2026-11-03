@@ -22,7 +22,7 @@ const sbom = JSON.parse(read('security/third-party-components.cdx.json'));
 
 if (!/jQuery v4\.0\.0/.test(jquery)) fail('jQuery asset is not 4.0.0'); else pass('jQuery 4.0.0 asset identified');
 if (!/Bootstrap v5\.3\.8/.test(bootstrapJs)) fail('Bootstrap JS asset is not 5.3.8'); else pass('Bootstrap JS 5.3.8 identified');
-if (!/Bootstrap v5\.3\.8/.test(bootstrapCss)) fail('Bootstrap CSS asset is not 5.3.8'); else pass('Bootstrap CSS 5.3.8 identified');
+if (!/Bootstrap\s+v5\.3\.8/.test(bootstrapCss)) fail('Bootstrap CSS asset is not 5.3.8'); else pass('Bootstrap CSS 5.3.8 identified');
 
 if (/^\s*this\.renderSocialMediaHub\(\);/m.test(engine)) fail('Social Media Hub is still invoked by homepage initialization');
 else if (!/\/\/\s*this\.renderSocialMediaHub\(\);/.test(engine)) fail('Expected commented Social Media renderer call was not found');
